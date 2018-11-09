@@ -10,10 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_07_102619) do
+ActiveRecord::Schema.define(version: 2018_11_08_142228) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "care_types", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "departments", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "hospitals", force: :cascade do |t|
     t.string "name"
@@ -24,18 +36,30 @@ ActiveRecord::Schema.define(version: 2018_11_07_102619) do
   create_table "jobs", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "profession"
-    t.string "hospital"
-    t.string "department"
-    t.string "license"
-    t.string "caretype"
     t.string "scope"
     t.string "working_hours"
     t.string "date_start"
     t.string "date_finish"
+    t.string "profession"
+    t.string "hospital"
+    t.string "department"
+    t.string "license"
+    t.string "care_type"
   end
 
   create_table "licenses", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "professions", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "regions", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -59,8 +83,11 @@ ActiveRecord::Schema.define(version: 2018_11_07_102619) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "region_id"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["region_id"], name: "index_users_on_region_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "users", "regions"
 end
